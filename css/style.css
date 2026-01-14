@@ -1,0 +1,159 @@
+@charset "UTF-8";
+
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+body {
+    
+}
+
+.contain {
+    padding: 10px;
+    width: 100vw;
+    min-height: 100vh;
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+}
+
+h1 {
+    text-align: center;
+    color: rgb(4, 4, 188);
+    margin-bottom: 25px;
+}
+
+main {
+    border-radius: 8px;
+    box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.296);
+}
+
+.main-table {
+    display: flex;
+    flex-direction: column;
+    border: 2px solid #333;
+    width: 100%;
+    max-width: 800px;
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: white;
+    table-layout: fixed; /* Importante para layout consistente */
+    
+}
+
+.row {
+    display: flex;
+    border-bottom: 2px solid #333;
+    min-height: 50px; /* Altura fixa para parecer planilha */
+    align-items: center; /* Centraliza verticalmente */
+}
+
+.row:last-child {
+    border-bottom: none;
+}
+
+.header {
+    background-color: #f0f0f0;
+    font-weight: bold;
+    height: 50px; /* Altura fixa para header */
+}
+
+.col {
+    padding: 10px 15px;
+    border-right: 2px solid #333;
+    height: 100%; /* Ocupa toda altura da linha */
+    display: flex;
+    align-items: center; /* Centraliza verticalmente */
+}
+
+/* Ajuste para as colunas - descrição ocupa espaço restante, vencimento largura fixa */
+.row .col:first-child {
+    flex: 1;
+    min-width: 0;
+    width: calc(100% - 140px); /* Largura total menos a largura da coluna vencimento */
+}
+
+.row .col:last-child {
+    width: 140px; /* Largura fixa para vencimento */
+    min-width: 140px; /* Garante que não fique menor */
+    max-width: 140px; /* Garante que não fique maior */
+    white-space: nowrap;
+    text-align: center; /* Centraliza horizontalmente */
+    font-weight: 500;
+    border-right: none; /* Remove borda direita da última coluna */
+    justify-content: center; /* Centraliza o conteúdo */
+    font-size: 0.95rem; /* Tamanho consistente */
+}
+
+/* Remove borda da primeira coluna? Não, mantém borda direita */
+.row .col:first-child {
+    border-right: 2px solid #333; /* Mantém borda entre colunas */
+}
+
+/* Ajuste específico para o header */
+.header .col:first-child {
+    width: calc(100% - 140px);
+}
+
+.header .col:last-child {
+    width: 140px;
+    min-width: 140px;
+    max-width: 140px;
+}
+
+/* Cores de Fundo por Status */
+.row.vencido {
+    background-color: #ffcccc;
+}   /* Vermelho claro */
+.row.no-mes {
+    background-color: #fff4cc;
+}    /* Amarelo/Laranja claro */
+.row.em-dia {
+    background-color: #d4edda;
+}    /* Verde claro */
+
+/* Estilo para o ícone de alerta */
+.alerta-icone {
+    display: inline-block;
+    margin-right: 8px;
+    margin-left: 5px;
+    
+    /* Sombra de contraste: cria um leve contorno preto para destacar o ícone */
+    filter: drop-shadow(0px 0px 2px rgba(0, 0, 0, 0.429));
+    
+    /* Cor e tamanho */
+    color: #b91c1c; 
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+/* Forçando a animação com prioridade */
+.row.vencido .alerta-icone {
+    animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.2); opacity: 0.7; } /* Além de piscar, ele aumenta de tamanho */
+    100% { transform: scale(1); opacity: 1; }
+}
+
+/* Para garantir que o texto da descrição não ultrapasse */
+.row .col:first-child {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Ajuste para HTML na descrição */
+.row .col:first-child * {
+    display: inline;
+}
+
+/* Garante que todas as células tenham o mesmo alinhamento */
+.col {
+    box-sizing: border-box;
+}
