@@ -8,7 +8,7 @@
 }
 
 body {
-    
+    background-color: #f7f9fc; /* Um fundo leve para dar contraste com a tabela branca */
 }
 
 .contain {
@@ -29,6 +29,8 @@ h1 {
 main {
     border-radius: 8px;
     box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.296);
+    width: 100%;
+    max-width: 1000px; /* Aumentado para acomodar as 4 colunas com folga */
 }
 
 .main-table {
@@ -36,18 +38,15 @@ main {
     flex-direction: column;
     border: 2px solid #333;
     width: 100%;
-    max-width: 800px;
     border-radius: 8px;
     overflow: hidden;
     background-color: white;
-    table-layout: fixed; /* Importante para layout consistente */
-    
 }
 
 .row {
     display: flex;
     border-bottom: 2px solid #333;
-    min-height: 50px; /* Altura fixa para parecer planilha */
+    min-height: 50px; /* Altura flexível com mínimo para parecer planilha */
     align-items: center; /* Centraliza verticalmente */
 }
 
@@ -58,62 +57,77 @@ main {
 .header {
     background-color: #f0f0f0;
     font-weight: bold;
-    height: 50px; /* Altura fixa para header */
+    min-height: 50px;
 }
 
 .col {
     padding: 10px 15px;
-    border-right: 2px solid #333;
     height: 100%; /* Ocupa toda altura da linha */
     display: flex;
     align-items: center; /* Centraliza verticalmente */
+    box-sizing: border-box;
 }
 
-/* Ajuste para as colunas - descrição ocupa espaço restante, vencimento largura fixa */
-.row .col:first-child {
-    flex: 1;
-    min-width: 0;
-    width: calc(100% - 140px); /* Largura total menos a largura da coluna vencimento */
-}
+/* ==========================================================================
+   Distribuição Proporcional das 4 Colunas (Equipamento, Modelo, Empresa, Vencimento)
+   ========================================================================== */
 
-.row .col:last-child {
-    width: 140px; /* Largura fixa para vencimento */
-    min-width: 140px; /* Garante que não fique menor */
-    max-width: 140px; /* Garante que não fique maior */
+/* 1ª Coluna: Equipamento (Ocupa o maior espaço disponível) */
+.row .col:nth-child(1) {
+    flex: 2; 
+    min-width: 180px;
+    border-right: 2px solid #333;
+    overflow: hidden;
+    text-overflow: ellipsis;
     white-space: nowrap;
-    text-align: center; /* Centraliza horizontalmente */
+}
+
+/* 2ª Coluna: Modelo */
+.row .col:nth-child(2) {
+    flex: 1;
+    min-width: 100px;
+    border-right: 2px solid #333;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* 3ª Coluna: Empresa */
+.row .col:nth-child(3) {
+    flex: 1;
+    min-width: 120px;
+    border-right: 2px solid #333;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* 4ª Coluna: Vencimento (Largura fixa e conteúdo centralizado) */
+.row .col:nth-child(4) {
+    width: 130px;
+    min-width: 130px;
+    max-width: 130px;
+    white-space: nowrap;
     font-weight: 500;
-    border-right: none; /* Remove borda direita da última coluna */
-    justify-content: center; /* Centraliza o conteúdo */
-    font-size: 0.95rem; /* Tamanho consistente */
+    justify-content: center; /* Centraliza horizontalmente o texto da data */
+    font-size: 0.95rem;
+    border-right: none; /* Última coluna não possui borda na direita */
 }
 
-/* Remove borda da primeira coluna? Não, mantém borda direita */
-.row .col:first-child {
-    border-right: 2px solid #333; /* Mantém borda entre colunas */
-}
-
-/* Ajuste específico para o header */
-.header .col:first-child {
-    width: calc(100% - 140px);
-}
-
-.header .col:last-child {
-    width: 140px;
-    min-width: 140px;
-    max-width: 140px;
-}
+/* ==========================================================================
+   Cores de Fundo por Status e Alertas
+   ========================================================================== */
 
 /* Cores de Fundo por Status */
 .row.vencido {
-    background-color: #ffcccc;
-}   /* Vermelho claro */
+    background-color: #ffcccc; /* Vermelho claro */
+}   
 .row.no-mes {
-    background-color: #fff4cc;
-}    /* Amarelo/Laranja claro */
+    background-color: #fff4cc; /* Amarelo/Laranja claro */
+}    
 .row.em-dia {
-    background-color: #d4edda;
-}    /* Verde claro */
+    background-color: #d4edda; /* Verde claro */
+}    
 
 /* Estilo para o ícone de alerta */
 .alerta-icone {
@@ -141,19 +155,36 @@ main {
     100% { transform: scale(1); opacity: 1; }
 }
 
-/* Para garantir que o texto da descrição não ultrapasse */
-.row .col:first-child {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-
-/* Ajuste para HTML na descrição */
-.row .col:first-child * {
+/* Ajuste para HTML interno na descrição se houver tags */
+.row .col:nth-child(1) * {
     display: inline;
 }
 
-/* Garante que todas as células tenham o mesmo alinhamento */
-.col {
-    box-sizing: border-box;
+/* ==========================================================================
+   Responsividade para Celulares (Telas até 600px)
+   ========================================================================== */
+@media (max-width: 600px) {
+    /* Faz o container principal ocupar toda a largura da tela do celular */
+    main {
+        max-width: 100%;
+    }
+
+    /* Oculta a 2ª coluna (Modelo) e a 3ª coluna (Empresa) */
+    .row .col:nth-child(2),
+    .row .col:nth-child(3) {
+        display: none;
+    }
+
+    /* Ajusta a 1ª coluna (Equipamento) para ocupar o espaço que sobrou */
+    .row .col:nth-child(1) {
+        flex: 1;
+        min-width: 0; /* Remove o min-width antigo para não empurrar a tela */
+    }
+
+    /* Mantém a data de vencimento visível e bem ajustada na direita */
+    .row .col:nth-child(4) {
+        width: 110px; /* Reduz ligeiramente a largura para telas muito estreitas */
+        min-width: 110px;
+        max-width: 110px;
+    }
 }
