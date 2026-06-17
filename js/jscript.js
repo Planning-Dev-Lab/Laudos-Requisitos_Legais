@@ -19,10 +19,11 @@ function csvParaObjeto(textoCsv) {
     const valores = linha.split(",");
     let obj = {};
     cabecalhos.forEach((cabecalho, index) => {
+      // Remove espaços e aspas ocultas dos cabeçalhos
       const chave = cabecalho.trim().replace(/\r/g, "").replace(/^"|"$/g, "");
       let valor = valores[index] ? valores[index].trim().replace(/\r/g, "") : "";
       
-      // Remove aspas duplas se elas estiverem cercando o texto (no início e no final)
+      // Limpa aspas geradas pelo Sheets devido a espaços invisíveis
       valor = valor.replace(/^"|"$/g, "").trim();
       
       obj[chave] = valor;
@@ -37,7 +38,7 @@ function renderizarTabela(equipamentos) {
   hoje.setHours(0, 0, 0, 0);
 
   equipamentos.forEach(equip => {
-    // Validação usando os cabeçalhos exatos do seu Sheets (Descricao e Vencimento)
+    // Validação usando as chaves exatas da primeira linha da sua planilha
     if (!equip.Descricao || !equip.Vencimento) return;
 
     // Trata formato de data DD/MM/AAAA
@@ -63,7 +64,7 @@ function renderizarTabela(equipamentos) {
     const novaLinha = document.createElement("div");
     novaLinha.className = `row ${classeStatus}`;
 
-    // Monta as 4 colunas seguindo rigorosamente a nova ordem estruturada no CSS
+    // Monta as 4 colunas injetando os dados limpos das aspas
     novaLinha.innerHTML = `
       <div class="col">${iconeAlerta} ${equip.Descricao}</div>
       <div class="col">${equip.Modelo || "-"}</div>

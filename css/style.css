@@ -163,7 +163,7 @@ main {
 /* ==========================================================================
    Responsividade para Celulares (Telas até 600px)
    ========================================================================== */
-@media (max-width: 600px) {
+@media (max-width: 700px) {
     /* Faz o container principal ocupar toda a largura da tela do celular */
     main {
         max-width: 100%;
